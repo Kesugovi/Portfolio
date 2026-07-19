@@ -1100,12 +1100,10 @@
             transition: transform 0.3s ease, z-index 0s;
             aspect-ratio: 4/3;
         }
-        .collage-item:nth-child(1) { transform: rotate(-4deg); }
-        .collage-item:nth-child(2) { transform: rotate(2deg) translateY(10px); }
-        .collage-item:nth-child(3) { transform: rotate(-2deg) translateY(-6px); }
-        .collage-item:nth-child(4) { transform: rotate(3deg) translateY(4px); }
-        .collage-item:nth-child(5) { transform: rotate(-3deg); }
-        .collage-item:nth-child(6) { transform: rotate(4deg) translateY(8px); }
+        .collage-item:nth-child(4n+1) { transform: rotate(-4deg) translateY(0); }
+        .collage-item:nth-child(4n+2) { transform: rotate(3deg) translateY(10px); }
+        .collage-item:nth-child(4n+3) { transform: rotate(-2deg) translateY(-6px); }
+        .collage-item:nth-child(4n+4) { transform: rotate(4deg) translateY(6px); }
         .collage-item:hover {
             transform: rotate(0deg) scale(1.08) translateY(0);
             z-index: 5;
@@ -1805,32 +1803,45 @@
          Paste your image URLs into the arrays below, save, and refresh.
          ═══════════════════════════════════════════════════════════════ -->
     <script>
-        // 1) Certificate train — put exactly 10 image URLs here, in any order.
+        // 1) Certificate train — your certificate screenshots (21 images).
         const CERT_MARQUEE_IMAGES = [
-            "PASTE_CERT_IMAGE_URL_1_HERE",
-            "PASTE_CERT_IMAGE_URL_2_HERE",
-            "PASTE_CERT_IMAGE_URL_3_HERE",
-            "PASTE_CERT_IMAGE_URL_4_HERE",
-            "PASTE_CERT_IMAGE_URL_5_HERE",
-            "PASTE_CERT_IMAGE_URL_6_HERE",
-            "PASTE_CERT_IMAGE_URL_7_HERE",
-            "PASTE_CERT_IMAGE_URL_8_HERE",
-            "PASTE_CERT_IMAGE_URL_9_HERE",
-            "PASTE_CERT_IMAGE_URL_10_HERE"
+            "https://raw.githubusercontent.com/Kesugovi/Portfolio/refs/heads/main/Certificate/Screenshot%202026-07-19%20123232.png",
+            "https://raw.githubusercontent.com/Kesugovi/Portfolio/refs/heads/main/Certificate/Screenshot%202026-07-19%20123251.png",
+            "https://raw.githubusercontent.com/Kesugovi/Portfolio/refs/heads/main/Certificate/Screenshot%202026-07-19%20123301.png",
+            "https://raw.githubusercontent.com/Kesugovi/Portfolio/refs/heads/main/Certificate/Screenshot%202026-07-19%20123313.png",
+            "https://raw.githubusercontent.com/Kesugovi/Portfolio/refs/heads/main/Certificate/Screenshot%202026-07-19%20123335.png",
+            "https://raw.githubusercontent.com/Kesugovi/Portfolio/refs/heads/main/Certificate/Screenshot%202026-07-19%20123346.png",
+            "https://raw.githubusercontent.com/Kesugovi/Portfolio/refs/heads/main/Certificate/Screenshot%202026-07-19%20123400.png",
+            "https://raw.githubusercontent.com/Kesugovi/Portfolio/refs/heads/main/Certificate/Screenshot%202026-07-19%20123416.png",
+            "https://raw.githubusercontent.com/Kesugovi/Portfolio/refs/heads/main/Certificate/Screenshot%202026-07-19%20123428.png",
+            "https://raw.githubusercontent.com/Kesugovi/Portfolio/refs/heads/main/Certificate/Screenshot%202026-07-19%20123445.png",
+            "https://raw.githubusercontent.com/Kesugovi/Portfolio/refs/heads/main/Certificate/Screenshot%202026-07-19%20123458.png",
+            "https://raw.githubusercontent.com/Kesugovi/Portfolio/refs/heads/main/Certificate/Screenshot%202026-07-19%20123511.png",
+            "https://raw.githubusercontent.com/Kesugovi/Portfolio/refs/heads/main/Certificate/Screenshot%202026-07-19%20123546.png",
+            "https://raw.githubusercontent.com/Kesugovi/Portfolio/refs/heads/main/Certificate/Screenshot%202026-07-19%20123559.png",
+            "https://raw.githubusercontent.com/Kesugovi/Portfolio/refs/heads/main/Certificate/Screenshot%202026-07-19%20123616.png",
+            "https://raw.githubusercontent.com/Kesugovi/Portfolio/refs/heads/main/Certificate/Screenshot%202026-07-19%20123632.png",
+            "https://raw.githubusercontent.com/Kesugovi/Portfolio/refs/heads/main/Certificate/Screenshot%202026-07-19%20123646.png",
+            "https://raw.githubusercontent.com/Kesugovi/Portfolio/refs/heads/main/Certificate/Screenshot%202026-07-19%20123701.png",
+            "https://raw.githubusercontent.com/Kesugovi/Portfolio/refs/heads/main/Certificate/Screenshot%202026-07-19%20123716.png",
+            "https://raw.githubusercontent.com/Kesugovi/Portfolio/refs/heads/main/Certificate/Screenshot%202026-07-19%20123749.png",
+            "https://raw.githubusercontent.com/Kesugovi/Portfolio/refs/heads/main/Certificate/Screenshot%202026-07-19%20123825.png"
         ];
 
-        // 2) Campus collage — exactly 6 certificate-design images you made.
+        // 2) Campus collage — your own certificate designs (8 images).
         const COLLAGE_IMAGES = [
-            "PASTE_COLLAGE_IMAGE_URL_1_HERE",
-            "PASTE_COLLAGE_IMAGE_URL_2_HERE",
-            "PASTE_COLLAGE_IMAGE_URL_3_HERE",
-            "PASTE_COLLAGE_IMAGE_URL_4_HERE",
-            "PASTE_COLLAGE_IMAGE_URL_5_HERE",
-            "PASTE_COLLAGE_IMAGE_URL_6_HERE"
+            "https://raw.githubusercontent.com/Kesugovi/Portfolio/refs/heads/main/Certificate%20Design/1.jpg",
+            "https://raw.githubusercontent.com/Kesugovi/Portfolio/refs/heads/main/Certificate%20Design/2.jpg",
+            "https://raw.githubusercontent.com/Kesugovi/Portfolio/refs/heads/main/Certificate%20Design/3.jpg",
+            "https://raw.githubusercontent.com/Kesugovi/Portfolio/refs/heads/main/Certificate%20Design/4.jpg",
+            "https://raw.githubusercontent.com/Kesugovi/Portfolio/refs/heads/main/Certificate%20Design/5.jpg",
+            "https://raw.githubusercontent.com/Kesugovi/Portfolio/refs/heads/main/Certificate%20Design/6.jpg",
+            "https://raw.githubusercontent.com/Kesugovi/Portfolio/refs/heads/main/Certificate%20Design/7.jpg",
+            "https://raw.githubusercontent.com/Kesugovi/Portfolio/refs/heads/main/Certificate%20Design/8.jpg"
         ];
 
-        // 3) ASI Club logo — one image URL.
-        const ASI_LOGO_URL = "PASTE_ASI_LOGO_URL_HERE";
+        // 3) ASI Club logo — still needs a URL. Upload it to your Portfolio repo and paste the raw link here.
+        const ASI_LOGO_URL = "";
 
         // 4) Jumping background icons behind the Skills section.
         //    These are already live (public simple-icons CDN) — nothing to paste here,
