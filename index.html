@@ -651,6 +651,9 @@
         .proj-icon.cloud {
             background: #4f8ef720;
         }
+        .proj-icon.idcard {
+            background: #f5a62320;
+        }
         .proj-title {
             font-size: 15px;
             font-weight: 600;
@@ -973,7 +976,187 @@
             transform: none;
         }
 
+        /* ── Certificate Train Marquee ── */
+        #cert-marquee {
+            padding: 4rem 0 6rem;
+            overflow: hidden;
+        }
+        .marquee-viewport {
+            width: 100%;
+            overflow: hidden;
+            mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+            -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+        }
+        .marquee-track {
+            display: flex;
+            gap: 1.5rem;
+            width: max-content;
+            animation: marquee-scroll 38s linear infinite;
+        }
+        .marquee-viewport:hover .marquee-track {
+            animation-play-state: paused;
+        }
+        @keyframes marquee-scroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+        .marquee-card {
+            flex: 0 0 auto;
+            width: 220px;
+            height: 155px;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            background: var(--bg2);
+            position: relative;
+        }
+        .marquee-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .marquee-car-coupler {
+            position: absolute;
+            top: 50%;
+            right: -14px;
+            width: 12px;
+            height: 4px;
+            background: var(--border2);
+            transform: translateY(-50%);
+            z-index: 2;
+        }
+
+        /* ── Campus & Community ── */
+        .campus-grid {
+            display: grid;
+            grid-template-columns: 0.85fr 1.15fr;
+            gap: 2.5rem;
+            align-items: start;
+        }
+        .asi-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+        .asi-logo-wrap {
+            width: 88px;
+            height: 88px;
+            border-radius: 50%;
+            margin: 0 auto 1.25rem;
+            border: 2px solid var(--border2);
+            overflow: hidden;
+            background: var(--bg3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .asi-logo-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .asi-role {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+        .asi-org {
+            font-size: 13px;
+            color: var(--accent);
+            margin-bottom: 14px;
+        }
+        .asi-desc {
+            font-size: 13.5px;
+            color: var(--muted);
+            line-height: 1.7;
+            text-align: left;
+        }
+        .asi-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+            margin-top: 16px;
+        }
+
+        .collage-wrap {
+            position: relative;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.1rem;
+            padding: 1rem;
+        }
+        .collage-item {
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            border: 1px solid var(--border2);
+            background: var(--bg2);
+            box-shadow: 0 10px 24px rgba(0,0,0,0.35);
+            transition: transform 0.3s ease, z-index 0s;
+            aspect-ratio: 4/3;
+        }
+        .collage-item:nth-child(1) { transform: rotate(-4deg); }
+        .collage-item:nth-child(2) { transform: rotate(2deg) translateY(10px); }
+        .collage-item:nth-child(3) { transform: rotate(-2deg) translateY(-6px); }
+        .collage-item:nth-child(4) { transform: rotate(3deg) translateY(4px); }
+        .collage-item:nth-child(5) { transform: rotate(-3deg); }
+        .collage-item:nth-child(6) { transform: rotate(4deg) translateY(8px); }
+        .collage-item:hover {
+            transform: rotate(0deg) scale(1.08) translateY(0);
+            z-index: 5;
+            border-color: var(--accent);
+        }
+        .collage-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .collage-caption {
+            text-align: center;
+            font-size: 12.5px;
+            color: var(--muted);
+            margin-top: 1.5rem;
+        }
+
+        /* ── Jumping tool/language icons behind Skills ── */
+        #skills {
+            position: relative;
+            overflow: hidden;
+        }
+        .skill-bg-icons {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.16;
+        }
+        .skill-bg-icons img {
+            position: absolute;
+            width: 42px;
+            height: 42px;
+            animation: icon-jump 3.2s ease-in-out infinite;
+        }
+        @keyframes icon-jump {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-26px) rotate(8deg); }
+        }
+        #skills .container {
+            position: relative;
+            z-index: 1;
+        }
+
         /* ── Responsive ── */
+        @media (max-width: 900px) {
+            .campus-grid {
+                grid-template-columns: 1fr;
+            }
+        }
         @media (max-width: 768px) {
             .hero-inner {
                 grid-template-columns: 1fr;
@@ -1013,6 +1196,13 @@
             .hero-name {
                 font-size: 40px;
             }
+            .collage-wrap {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .marquee-card {
+                width: 170px;
+                height: 120px;
+            }
         }
     </style>
 </head>
@@ -1027,6 +1217,7 @@
             <li><a href="#skills">Skills</a></li>
             <li><a href="#projects">Projects</a></li>
             <li><a href="#certifications">Certs</a></li>
+            <li><a href="#community">Community</a></li>
             <li><a href="#activity">Activity</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
@@ -1039,6 +1230,7 @@
         <a href="#skills" onclick="this.closest('.mobile-menu').classList.remove('open')">Skills</a>
         <a href="#projects" onclick="this.closest('.mobile-menu').classList.remove('open')">Projects</a>
         <a href="#certifications" onclick="this.closest('.mobile-menu').classList.remove('open')">Certifications</a>
+        <a href="#community" onclick="this.closest('.mobile-menu').classList.remove('open')">Community</a>
         <a href="#activity" onclick="this.closest('.mobile-menu').classList.remove('open')">Activity</a>
         <a href="#contact" onclick="this.closest('.mobile-menu').classList.remove('open')">Contact</a>
     </div>
@@ -1128,6 +1320,9 @@
 
     <!-- ─── SKILLS ─── -->
     <section id="skills">
+        <div class="skill-bg-icons" id="skillBgIcons">
+            <!-- populated automatically from SKILL_ICONS in the config script near the end of this file -->
+        </div>
         <div class="container">
             <div class="reveal">
                 <p class="section-eyebrow">Skills</p>
@@ -1185,6 +1380,7 @@
                 <div class="proj-card"><div class="proj-header"><div class="proj-icon data">🚗</div><span class="proj-badge badge-live">Safety</span></div><div class="proj-title">Driver Drowsiness Detection</div><p class="proj-desc">AI + Computer Vision system that detects sleepy drivers and alerts them. Showcased at Nexus'25, organized by Neoteric AI Association, RIT.</p><div class="proj-tags"><span class="proj-tag tag blue">OpenCV</span><span class="proj-tag tag purple">CNN</span><span class="proj-tag tag green">Real-time</span></div></div>
                 <div class="proj-card"><div class="proj-header"><div class="proj-icon iot">🏠</div><span class="proj-badge badge-top">R² = 0.9528</span></div><div class="proj-title">Smart Home IoT Load Forecasting</div><p class="proj-desc">Adaptive hybrid LSTM–XGBoost framework with behavioral feature engineering (load entropy, peak-hour indicators) for smart home energy forecasting. Achieved R² = 0.9528 and RMSE = 0.1021 using adaptive inverse-error ensemble weighting with 95% confidence interval uncertainty quantification.</p><div class="proj-tags"><span class="proj-tag tag blue">Python</span><span class="proj-tag tag purple">LSTM</span><span class="proj-tag tag green">XGBoost</span><span class="proj-tag tag amber">Pandas</span><span class="proj-tag tag blue">Scikit-learn</span></div></div>
                 <div class="proj-card"><div class="proj-header"><div class="proj-icon cloud">☁️</div><span class="proj-badge badge-live">Cloud</span></div><div class="proj-title">Compliance Checker — Cloud Policy Validator</div><p class="proj-desc">Automated validation of Terraform configurations against Google Cloud &amp; CIS security benchmarks. Generates structured compliance reports, reducing manual cloud audit effort significantly.</p><div class="proj-tags"><span class="proj-tag tag blue">Python</span><span class="proj-tag tag purple">Flask</span><span class="proj-tag tag green">Streamlit</span><span class="proj-tag tag amber">Terraform</span><span class="proj-tag tag blue">JSON</span></div></div>
+                <div class="proj-card"><div class="proj-header"><div class="proj-icon idcard">🪪</div><span class="proj-badge badge-top">1 hr → 1 min</span></div><div class="proj-title">Handwritten Records → Excel Automation</div><p class="proj-desc">Built for a family friend's ID card business: upload a handwritten sheet or scanned PDF, Gemini API extracts the details, and a clean Excel sheet is generated — ready for Photoshop Data Sets to bulk-print ID cards. Deployed free on Render. Cut manual entry from ~1 hour to ~1 minute per batch.</p><div class="proj-tags"><span class="proj-tag tag blue">Python</span><span class="proj-tag tag purple">Flask</span><span class="proj-tag tag green">Gemini API</span><span class="proj-tag tag amber">OpenPyXL</span><span class="proj-tag tag blue">Gunicorn</span></div><a href="https://lnkd.in/gEDP_EB4" target="_blank" class="btn-outline" style="text-align:center; margin-top:auto;">View on GitHub ↗</a></div>
             </div>
         </div>
     </section>
@@ -1208,7 +1404,7 @@
     <div class="cert-issuer">Participation Certificate</div>
     <div class="cert-date">2025</div>
     <div class="cert-desc">
-        “Some stories are best told through movement, not words. 🪈🍃”
+        "Some stories are best told through movement, not words. 🪈🍃"
     </div>
 </div>
 
@@ -1221,6 +1417,54 @@
         Secured First Place in the World Elephant Day Drawing Competition organized by M.V. Bhimaraja Janakirumal Charitable Trust and Naatru Literary Organization, Rajapalayam.
     </div>
 </div>
+        </div>
+    </section>
+
+    <!-- ─── CERTIFICATE TRAIN MARQUEE ─── -->
+    <section id="cert-marquee">
+        <div class="container">
+            <div class="reveal">
+                <p class="section-eyebrow">Certificate Gallery</p>
+                <h2 class="section-title">Rolling through the wins</h2>
+                <p class="section-sub">A running strip of certificates and recognitions — hover to pause.</p>
+            </div>
+        </div>
+        <div class="marquee-viewport">
+            <div class="marquee-track" id="marqueeTrack">
+                <!-- populated automatically from CERT_MARQUEE_IMAGES in the config script near the end of this file -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── CAMPUS & COMMUNITY ─── -->
+    <section id="community">
+        <div class="container">
+            <div class="reveal">
+                <p class="section-eyebrow">Campus &amp; Community</p>
+                <h2 class="section-title">Beyond the code</h2>
+                <p class="section-sub">My role in the college AI community, and certificate designs I've made for campus events.</p>
+            </div>
+            <div class="campus-grid reveal">
+                <div class="asi-card">
+                    <div class="asi-logo-wrap">
+                        <img id="asiLogoImg" src="" alt="ASI Club logo" />
+                    </div>
+                    <div class="asi-role">Technical Event Coordinator</div>
+                    <div class="asi-org">ASI Club · Dept. of AI &amp; Data Science</div>
+                    <p class="asi-desc">I coordinate technical events for the ASI (Artificial Intelligence Student community) Club at Ramco Institute of Technology, Dept. of AI &amp; Data Science — planning and running sessions, and designing the certificates and visual assets for club events myself.</p>
+                    <div class="asi-tags">
+                        <span class="tag blue">Event Coordination</span>
+                        <span class="tag purple">Canva Design</span>
+                        <span class="tag amber">AI &amp; DS Dept.</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="collage-wrap" id="collageWrap">
+                        <!-- populated automatically from COLLAGE_IMAGES in the config script near the end of this file -->
+                    </div>
+                    <p class="collage-caption">Certificate designs I created for ASI Club &amp; college events</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -1554,6 +1798,82 @@
             sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
             navLinks.forEach(a => { a.style.color = a.getAttribute('href') === '#' + current ? 'var(--text)' : ''; });
         });
+    </script>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         PORTFOLIO CONFIG — this is the ONLY block you need to edit.
+         Paste your image URLs into the arrays below, save, and refresh.
+         ═══════════════════════════════════════════════════════════════ -->
+    <script>
+        // 1) Certificate train — put exactly 10 image URLs here, in any order.
+        const CERT_MARQUEE_IMAGES = [
+            "PASTE_CERT_IMAGE_URL_1_HERE",
+            "PASTE_CERT_IMAGE_URL_2_HERE",
+            "PASTE_CERT_IMAGE_URL_3_HERE",
+            "PASTE_CERT_IMAGE_URL_4_HERE",
+            "PASTE_CERT_IMAGE_URL_5_HERE",
+            "PASTE_CERT_IMAGE_URL_6_HERE",
+            "PASTE_CERT_IMAGE_URL_7_HERE",
+            "PASTE_CERT_IMAGE_URL_8_HERE",
+            "PASTE_CERT_IMAGE_URL_9_HERE",
+            "PASTE_CERT_IMAGE_URL_10_HERE"
+        ];
+
+        // 2) Campus collage — exactly 6 certificate-design images you made.
+        const COLLAGE_IMAGES = [
+            "PASTE_COLLAGE_IMAGE_URL_1_HERE",
+            "PASTE_COLLAGE_IMAGE_URL_2_HERE",
+            "PASTE_COLLAGE_IMAGE_URL_3_HERE",
+            "PASTE_COLLAGE_IMAGE_URL_4_HERE",
+            "PASTE_COLLAGE_IMAGE_URL_5_HERE",
+            "PASTE_COLLAGE_IMAGE_URL_6_HERE"
+        ];
+
+        // 3) ASI Club logo — one image URL.
+        const ASI_LOGO_URL = "PASTE_ASI_LOGO_URL_HERE";
+
+        // 4) Jumping background icons behind the Skills section.
+        //    These are already live (public simple-icons CDN) — nothing to paste here,
+        //    but feel free to add/remove slugs from this list.
+        const SKILL_ICONS = [
+            "python", "html5", "css3", "tensorflow", "scikitlearn",
+            "pandas", "numpy", "flask", "streamlit", "git",
+            "googlegemini", "opencv", "mysql", "canva"
+        ];
+
+        // ── Render: certificate marquee (duplicated once for a seamless loop) ──
+        const marqueeTrack = document.getElementById('marqueeTrack');
+        if (marqueeTrack) {
+            const buildCards = () => CERT_MARQUEE_IMAGES.map(url => `
+                <div class="marquee-card"><img src="${url}" alt="Certificate" loading="lazy"/></div>
+            `).join('');
+            marqueeTrack.innerHTML = buildCards() + buildCards();
+        }
+
+        // ── Render: campus collage ──
+        const collageWrap = document.getElementById('collageWrap');
+        if (collageWrap) {
+            collageWrap.innerHTML = COLLAGE_IMAGES.map(url => `
+                <div class="collage-item"><img src="${url}" alt="Certificate design" loading="lazy"/></div>
+            `).join('');
+        }
+
+        // ── Render: ASI logo ──
+        const asiLogoImg = document.getElementById('asiLogoImg');
+        if (asiLogoImg) asiLogoImg.src = ASI_LOGO_URL;
+
+        // ── Render: jumping skill icons, randomly placed ──
+        const skillBgIcons = document.getElementById('skillBgIcons');
+        if (skillBgIcons) {
+            skillBgIcons.innerHTML = SKILL_ICONS.map((slug, i) => {
+                const top = Math.random() * 80;
+                const left = (i / SKILL_ICONS.length) * 95 + (Math.random() * 5);
+                const delay = (Math.random() * 3).toFixed(2);
+                const duration = (2.6 + Math.random() * 1.6).toFixed(2);
+                return `<img src="https://cdn.simpleicons.org/${slug}/ffffff" alt=""
+                    style="top:${top}%; left:${left}%; animation-delay:${delay}s; animation-duration:${duration}s;" />`;
+            }).join('');
+        }
     </script>
 
     
