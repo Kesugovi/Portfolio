@@ -1090,6 +1090,7 @@
             grid-template-columns: repeat(3, 1fr);
             gap: 1.1rem;
             padding: 1rem;
+            overflow: visible;
         }
         .collage-item {
             border-radius: var(--radius-sm);
@@ -1097,17 +1098,20 @@
             border: 1px solid var(--border2);
             background: var(--bg2);
             box-shadow: 0 10px 24px rgba(0,0,0,0.35);
-            transition: transform 0.3s ease, z-index 0s;
+            transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.45s ease, border-color 0.3s;
             aspect-ratio: 4/3;
+            transform-origin: center center;
+            will-change: transform;
         }
         .collage-item:nth-child(4n+1) { transform: rotate(-4deg) translateY(0); }
         .collage-item:nth-child(4n+2) { transform: rotate(3deg) translateY(10px); }
         .collage-item:nth-child(4n+3) { transform: rotate(-2deg) translateY(-6px); }
         .collage-item:nth-child(4n+4) { transform: rotate(4deg) translateY(6px); }
         .collage-item:hover {
-            transform: rotate(0deg) scale(1.08) translateY(0);
-            z-index: 5;
+            transform: rotate(0deg) scale(2.15) translateY(0);
+            z-index: 20;
             border-color: var(--accent);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6), 0 0 0 1px var(--accent), 0 0 40px #4f8ef755;
         }
         .collage-item img {
             width: 100%;
@@ -1122,7 +1126,69 @@
             margin-top: 1.5rem;
         }
 
-        /* ── Jumping tool/language icons behind Skills ── */
+        /* ── Skills: Tiered (no percentages) ── */
+        .tier-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.25rem;
+        }
+        .tier-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            transition: border-color 0.25s, transform 0.25s;
+        }
+        .tier-card:hover {
+            border-color: var(--border2);
+            transform: translateY(-3px);
+        }
+        .tier-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1.25rem;
+        }
+        .tier-icon {
+            font-size: 26px;
+            flex-shrink: 0;
+        }
+        .tier-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text);
+        }
+        .tier-sub {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+        .tier-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        /* ── Global floating background (coding / math / superhero-vibe symbols) ── */
+        .global-bg-symbols {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+            opacity: 0.16;
+        }
+        .global-bg-symbols span {
+            position: absolute;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent);
+            white-space: nowrap;
+            animation: bgFloat ease-in-out infinite;
+        }
+        @keyframes bgFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-46px) rotate(12deg); }
+        }
         #skills {
             position: relative;
             overflow: hidden;
@@ -1206,6 +1272,11 @@
 </head>
 <body>
 
+    <!-- ─── GLOBAL FLOATING BACKGROUND (code / math / hero-vibe symbols) ─── -->
+    <div class="global-bg-symbols" id="globalBgSymbols">
+        <!-- populated automatically from BG_SYMBOLS in the config script near the end of this file -->
+    </div>
+
     <!-- ─── NAV ─── -->
     <nav>
         <a href="#hero" class="nav-logo">K<span>.</span>G</a>
@@ -1215,8 +1286,8 @@
             <li><a href="#skills">Skills</a></li>
             <li><a href="#projects">Projects</a></li>
             <li><a href="#certifications">Certs</a></li>
-            <li><a href="#community">Community</a></li>
             <li><a href="#activity">Activity</a></li>
+            <li><a href="#community">Community</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
         <a href="https://www.linkedin.com/in/kesavan-g-09a126289" class="nav-cta" target="_blank">LinkedIn ↗</a>
@@ -1228,8 +1299,8 @@
         <a href="#skills" onclick="this.closest('.mobile-menu').classList.remove('open')">Skills</a>
         <a href="#projects" onclick="this.closest('.mobile-menu').classList.remove('open')">Projects</a>
         <a href="#certifications" onclick="this.closest('.mobile-menu').classList.remove('open')">Certifications</a>
-        <a href="#community" onclick="this.closest('.mobile-menu').classList.remove('open')">Community</a>
         <a href="#activity" onclick="this.closest('.mobile-menu').classList.remove('open')">Activity</a>
+        <a href="#community" onclick="this.closest('.mobile-menu').classList.remove('open')">Community</a>
         <a href="#contact" onclick="this.closest('.mobile-menu').classList.remove('open')">Contact</a>
     </div>
 
@@ -1325,39 +1396,70 @@
             <div class="reveal">
                 <p class="section-eyebrow">Skills</p>
                 <h2 class="section-title">Technical toolkit</h2>
-                <p class="section-sub">Languages, frameworks, and tools I use day-to-day.</p>
+                <p class="section-sub">Not a percentage bar — just what I actually reach for, day to day.</p>
             </div>
-            <div class="skills-grid reveal">
-                <div class="skill-cat">
-                    <div class="skill-cat-title"><span class="skill-cat-icon">🐍</span> Languages</div>
-                    <div class="skill-bars">
-                        <div class="skill-bar-row"><div class="skill-bar-label"><span>Python</span><span>90%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:0%" data-w="90%"></div></div></div>
-                        <div class="skill-bar-row"><div class="skill-bar-label"><span>HTML &amp; CSS</span><span>75%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:0%" data-w="75%"></div></div></div>
-                        <div class="skill-bar-row"><div class="skill-bar-label"><span>SQL</span><span>70%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:0%" data-w="70%"></div></div></div>
+            <div class="tier-grid reveal">
+                <div class="tier-card">
+                    <div class="tier-head">
+                        <span class="tier-icon">🔥</span>
+                        <div>
+                            <div class="tier-name">Daily Driver</div>
+                            <div class="tier-sub">Use these on almost every project</div>
+                        </div>
+                    </div>
+                    <div class="tier-chips">
+                        <span class="tag blue">Python</span>
+                        <span class="tag blue">Pandas &amp; NumPy</span>
+                        <span class="tag blue">Git</span>
+                        <span class="tag blue">Flask</span>
+                        <span class="tag blue">VS Code</span>
                     </div>
                 </div>
-                <div class="skill-cat">
-                    <div class="skill-cat-title"><span class="skill-cat-icon">🤖</span> Machine Learning</div>
-                    <div class="skill-bars">
-                        <div class="skill-bar-row"><div class="skill-bar-label"><span>CNN / RNN</span><span>65%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:0%" data-w="65%"></div></div></div>
-                        <div class="skill-bar-row"><div class="skill-bar-label"><span>Scikit-learn</span><span>70%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:0%" data-w="70%"></div></div></div>
-                        <div class="skill-bar-row"><div class="skill-bar-label"><span>TensorFlow / Keras</span><span>70%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:0%" data-w="70%"></div></div></div>
+                <div class="tier-card">
+                    <div class="tier-head">
+                        <span class="tier-icon">🧩</span>
+                        <div>
+                            <div class="tier-name">Comfortable With</div>
+                            <div class="tier-sub">Solid enough to build real things</div>
+                        </div>
+                    </div>
+                    <div class="tier-chips">
+                        <span class="tag purple">TensorFlow / Keras</span>
+                        <span class="tag purple">Scikit-learn</span>
+                        <span class="tag purple">CNN / RNN</span>
+                        <span class="tag purple">HTML &amp; CSS</span>
+                        <span class="tag purple">SQL</span>
+                        <span class="tag purple">Streamlit</span>
                     </div>
                 </div>
-                <div class="skill-cat">
-                    <div class="skill-cat-title"><span class="skill-cat-icon">📊</span> Data &amp; Analytics</div>
-                    <div class="skill-bars">
-                        <div class="skill-bar-row"><div class="skill-bar-label"><span>Pandas / NumPy</span><span>85%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:0%" data-w="85%"></div></div></div>
-                        <div class="skill-bar-row"><div class="skill-bar-label"><span>Data Visualisation</span><span>75%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:0%" data-w="75%"></div></div></div>
-                        <div class="skill-bar-row"><div class="skill-bar-label"><span>Excel</span><span>50%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:0%" data-w="50%"></div></div></div>
+                <div class="tier-card">
+                    <div class="tier-head">
+                        <span class="tier-icon">🧠</span>
+                        <div>
+                            <div class="tier-name">AI-Assisted Workflow</div>
+                            <div class="tier-sub">Tools I think alongside</div>
+                        </div>
+                    </div>
+                    <div class="tier-chips">
+                        <span class="tag green">Gemini API</span>
+                        <span class="tag green">ChatGPT / Claude</span>
+                        <span class="tag green">Comet / Kimi</span>
+                        <span class="tag green">Canva</span>
                     </div>
                 </div>
-                <div class="skill-cat">
-                    <div class="skill-cat-title"><span class="skill-cat-icon">✨</span> AI Tools</div>
-                    <div class="skill-bars">
-                        <div class="skill-bar-row"><div class="skill-bar-label"><span>ChatGPT / Claude</span><span>90%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:0%" data-w="90%"></div></div></div>
-                        <div class="skill-bar-row"><div class="skill-bar-label"><span>Google Gemini</span><span>85%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:0%" data-w="85%"></div></div></div>
-                        <div class="skill-bar-row"><div class="skill-bar-label"><span>Comet / Kimi / Wispr</span><span>75%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:0%" data-w="75%"></div></div></div>
+                <div class="tier-card">
+                    <div class="tier-head">
+                        <span class="tier-icon">🌱</span>
+                        <div>
+                            <div class="tier-name">Currently Exploring</div>
+                            <div class="tier-sub">Learning by shipping, not just reading</div>
+                        </div>
+                    </div>
+                    <div class="tier-chips">
+                        <span class="tag amber">YOLOv8</span>
+                        <span class="tag amber">Terraform</span>
+                        <span class="tag amber">LiveKit</span>
+                        <span class="tag amber">Power BI</span>
                     </div>
                 </div>
             </div>
@@ -1434,38 +1536,6 @@
         </div>
     </section>
 
-    <!-- ─── CAMPUS & COMMUNITY ─── -->
-    <section id="community">
-        <div class="container">
-            <div class="reveal">
-                <p class="section-eyebrow">Campus &amp; Community</p>
-                <h2 class="section-title">Beyond the code</h2>
-                <p class="section-sub">My role in the college AI community, and certificate designs I've made for campus events.</p>
-            </div>
-            <div class="campus-grid reveal">
-                <div class="asi-card">
-                    <div class="asi-logo-wrap">
-                        <img id="asiLogoImg" src="" alt="ASI Club logo" />
-                    </div>
-                    <div class="asi-role">Technical Event Coordinator</div>
-                    <div class="asi-org">ASI Club · Dept. of AI &amp; Data Science</div>
-                    <p class="asi-desc">I coordinate technical events for the ASI (Artificial Intelligence Student community) Club at Ramco Institute of Technology, Dept. of AI &amp; Data Science — planning and running sessions, and designing the certificates and visual assets for club events myself.</p>
-                    <div class="asi-tags">
-                        <span class="tag blue">Event Coordination</span>
-                        <span class="tag purple">Canva Design</span>
-                        <span class="tag amber">AI &amp; DS Dept.</span>
-                    </div>
-                </div>
-                <div>
-                    <div class="collage-wrap" id="collageWrap">
-                        <!-- populated automatically from COLLAGE_IMAGES in the config script near the end of this file -->
-                    </div>
-                    <p class="collage-caption">Certificate designs I created for ASI Club &amp; college events</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- ─── ACTIVITY ─── -->
     <section id="activity">
         <div class="container">
@@ -1498,6 +1568,38 @@
                         <div class="edu-year">May 2023 – May 2027 · Rajapalayam, Tamil Nadu</div>
                         <div class="tl-skills" style="margin-top:10px;"><span class="tl-skill">Python</span><span class="tl-skill">Machine Learning</span><span class="tl-skill">Data Science</span><span class="tl-skill">HTML &amp; CSS</span></div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── CAMPUS & COMMUNITY ─── -->
+    <section id="community">
+        <div class="container">
+            <div class="reveal">
+                <p class="section-eyebrow">Campus &amp; Community</p>
+                <h2 class="section-title">Beyond the code</h2>
+                <p class="section-sub">My role in the college AI community, and certificate designs I've made for campus events.</p>
+            </div>
+            <div class="campus-grid reveal">
+                <div class="asi-card">
+                    <div class="asi-logo-wrap">
+                        <img id="asiLogoImg" src="" alt="ASI Club logo" />
+                    </div>
+                    <div class="asi-role">Technical Event Coordinator</div>
+                    <div class="asi-org">ASI Club · Dept. of AI &amp; Data Science</div>
+                    <p class="asi-desc">I coordinate technical events for the ASI (Artificial Intelligence Student community) Club at Ramco Institute of Technology, Dept. of AI &amp; Data Science — planning and running sessions, and designing the certificates and visual assets for club events myself.</p>
+                    <div class="asi-tags">
+                        <span class="tag blue">Event Coordination</span>
+                        <span class="tag purple">Canva Design</span>
+                        <span class="tag amber">AI &amp; DS Dept.</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="collage-wrap" id="collageWrap">
+                        <!-- populated automatically from COLLAGE_IMAGES in the config script near the end of this file -->
+                    </div>
+                    <p class="collage-caption">Certificate designs I created for ASI Club &amp; college events</p>
                 </div>
             </div>
         </div>
@@ -1780,14 +1882,6 @@
         }, { threshold: 0.12 });
         reveals.forEach(r => observer.observe(r));
 
-        // Skill bars
-        const bars = document.querySelectorAll('.skill-bar-fill');
-        const barObserver = new IntersectionObserver((entries) => {
-            entries.forEach(e => { if (e.isIntersecting) { e.target.style.width = e.target.dataset.w;
-                    barObserver.unobserve(e.target); } });
-        }, { threshold: 0.3 });
-        bars.forEach(b => barObserver.observe(b));
-
         // Active nav link
         const sections = document.querySelectorAll('section[id]');
         const navLinks = document.querySelectorAll('.nav-links a');
@@ -1841,7 +1935,7 @@
         ];
 
         // 3) ASI Club logo — still needs a URL. Upload it to your Portfolio repo and paste the raw link here.
-        const ASI_LOGO_URL = "https://github.com/Kesugovi/Portfolio/blob/main/Certificate/ASI%20logo.jpg?raw=true";
+        const ASI_LOGO_URL = "PASTE_ASI_LOGO_URL_HERE";
 
         // 4) Jumping background icons behind the Skills section.
         //    These are already live (public simple-icons CDN) — nothing to paste here,
@@ -1850,6 +1944,16 @@
             "python", "html5", "css3", "tensorflow", "scikitlearn",
             "pandas", "numpy", "flask", "streamlit", "git",
             "googlegemini", "opencv", "mysql", "canva"
+        ];
+
+        // 5) Global floating background — code symbols, math symbols, and a bit of hero-vibe.
+        //    Shows faintly behind the whole site, not just one section. Edit freely.
+        const BG_SYMBOLS = [
+            "{ }", "[ ]", "( )", "</>", "=>", "&&", "||", "==", "!=", "++",
+            "#!/usr", "0x2A", ";", ":", "@", "#", "$", "%", "^", "&", "*",
+            "π", "∑", "√", "∞", "λ", "Δ", "∫", "θ",
+            "function", "const", "return", "import", "async", "for(;;)", "SELECT *", "print()",
+            "01", "10", "⚡", "🛡️", "⚙️", "💫", "🎯", "🧠", "🚀"
         ];
 
         // ── Render: certificate marquee (duplicated once for a seamless loop) ──
@@ -1884,6 +1988,23 @@
                 return `<img src="https://cdn.simpleicons.org/${slug}/ffffff" alt=""
                     style="top:${top}%; left:${left}%; animation-delay:${delay}s; animation-duration:${duration}s;" />`;
             }).join('');
+        }
+
+        // ── Render: global floating background symbols (whole-site ambient layer) ──
+        const globalBgSymbols = document.getElementById('globalBgSymbols');
+        if (globalBgSymbols) {
+            const COUNT = 42;
+            let html = '';
+            for (let i = 0; i < COUNT; i++) {
+                const symbol = BG_SYMBOLS[Math.floor(Math.random() * BG_SYMBOLS.length)];
+                const top = Math.random() * 100;
+                const left = Math.random() * 100;
+                const size = 12 + Math.random() * 20;
+                const duration = 6 + Math.random() * 10;
+                const delay = Math.random() * 6;
+                html += `<span style="top:${top}%; left:${left}%; font-size:${size}px; animation-duration:${duration}s; animation-delay:-${delay}s;">${symbol}</span>`;
+            }
+            globalBgSymbols.innerHTML = html;
         }
     </script>
 
