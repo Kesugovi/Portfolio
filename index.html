@@ -33,7 +33,7 @@
         }
 
         html {
-            scroll-behavior: smooth;
+            scroll-behavior: auto;
         }
 
         body {
@@ -59,6 +59,48 @@
             max-width: 1040px;
             margin: 0 auto;
             padding: 0 2rem;
+        }
+
+        /* ── Page Transition Overlay ── */
+        .page-transition-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            pointer-events: none;
+            background: linear-gradient(160deg, var(--bg3) 0%, var(--bg) 65%);
+            transform: translateY(100%);
+            transition: transform 0.65s cubic-bezier(0.76, 0, 0.24, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .page-transition-overlay::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 60% 50% at 50% 50%, #4f8ef714 0%, transparent 70%);
+        }
+        .page-transition-overlay.is-covering {
+            transform: translateY(0%);
+        }
+        .page-transition-overlay.is-revealing {
+            transform: translateY(-100%);
+        }
+        .page-transition-label {
+            position: relative;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--accent);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.35s ease 0.15s, transform 0.35s ease 0.15s;
+        }
+        .page-transition-overlay.is-covering .page-transition-label {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* ── Nav ── */
@@ -199,8 +241,8 @@
         .hero-inner {
             display: grid;
             grid-template-columns: 1fr auto;
-            gap: 4rem;
-            align-items: center;
+            gap: 3rem;
+            align-items: flex-end;
             width: 100%;
             position: relative;
             z-index: 1;
@@ -311,37 +353,26 @@
         .hero-avatar-wrap {
             position: relative;
             flex-shrink: 0;
+            width: min(360px, 34vw);
         }
 
         .hero-avatar {
-            width: 210px;
-            height: 210px;
-            border-radius: 50%;
+            width: 100%;
+            aspect-ratio: 3 / 4;
             overflow: hidden;
-            border: 2px solid var(--border2);
             position: relative;
             z-index: 1;
-            background: var(--bg2);
+            background: transparent;
+            mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
         }
         .hero-avatar img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            object-position: top center;
             display: block;
-        }
-
-        .hero-ring {
-            position: absolute;
-            inset: -18px;
-            border-radius: 50%;
-            border: 1px dashed #4f8ef728;
-            animation: spin 24s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
+            filter: saturate(1.05) contrast(1.02);
         }
 
         .hero-stats {
@@ -1228,6 +1259,7 @@
             }
             .hero-avatar-wrap {
                 margin: 0 auto;
+                width: min(260px, 60vw);
             }
             .hero-desc {
                 margin: 0 auto 2.5rem;
@@ -1272,6 +1304,11 @@
 </head>
 <body>
 
+    <!-- ─── PAGE TRANSITION OVERLAY (used for all in-page nav) ─── -->
+    <div class="page-transition-overlay" id="pageTransitionOverlay">
+        <span class="page-transition-label" id="pageTransitionLabel"></span>
+    </div>
+
     <!-- ─── GLOBAL FLOATING BACKGROUND (code / math / hero-vibe symbols) ─── -->
     <div class="global-bg-symbols" id="globalBgSymbols">
         <!-- populated automatically from BG_SYMBOLS in the config script near the end of this file -->
@@ -1294,14 +1331,14 @@
         <button class="hamburger" onclick="document.querySelector('.mobile-menu').classList.toggle('open')">☰</button>
     </nav>
     <div class="mobile-menu">
-        <a href="#about" onclick="this.closest('.mobile-menu').classList.remove('open')">About</a>
-        <a href="#experience" onclick="this.closest('.mobile-menu').classList.remove('open')">Experience</a>
-        <a href="#skills" onclick="this.closest('.mobile-menu').classList.remove('open')">Skills</a>
-        <a href="#projects" onclick="this.closest('.mobile-menu').classList.remove('open')">Projects</a>
-        <a href="#certifications" onclick="this.closest('.mobile-menu').classList.remove('open')">Certifications</a>
-        <a href="#activity" onclick="this.closest('.mobile-menu').classList.remove('open')">Activity</a>
-        <a href="#community" onclick="this.closest('.mobile-menu').classList.remove('open')">Community</a>
-        <a href="#contact" onclick="this.closest('.mobile-menu').classList.remove('open')">Contact</a>
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#certifications">Certifications</a>
+        <a href="#activity">Activity</a>
+        <a href="#community">Community</a>
+        <a href="#contact">Contact</a>
     </div>
 
     <!-- ─── HERO ─── -->
@@ -1331,7 +1368,6 @@
                     </div>
                 </div>
                 <div class="hero-avatar-wrap">
-                    <div class="hero-ring"></div>
                     <div class="hero-avatar">
                         <img src="https://raw.githubusercontent.com/Kesugovi/Portfolio/refs/heads/main/Kesavan_image.jpeg"/>
                     </div>
@@ -1622,8 +1658,8 @@
                 </div>
                 <div class="contact-links reveal">
                     <a href="https://www.linkedin.com/in/kesavan-g-09a126289" class="contact-link" target="_blank"><div class="contact-link-icon">💼</div><div><div class="contact-link-label">LinkedIn</div><div class="contact-link-val">Kesavan G</div></div></a>
-                    <a href="+91 90251 98474" class="contact-link" target="_blank"><div class="contact-link-icon">@</div><div><div class="contact-link-label">Contact no</div><div class="contact-link-val">9025198474</div></div></a>
-                    <a href="gkesu0007@gmail.com" class="contact-link" target="_blank"><div class="contact-link-icon">💼</div><div><div class="contact-link-label">Mail</div><div class="contact-link-val">gkesu0007@gmail.com</div></div></a>
+                    <a href="tel:+919025198474" class="contact-link"><div class="contact-link-icon">@</div><div><div class="contact-link-label">Contact no</div><div class="contact-link-val">9025198474</div></div></a>
+                    <a href="mailto:gkesu0007@gmail.com" class="contact-link"><div class="contact-link-icon">💼</div><div><div class="contact-link-label">Mail</div><div class="contact-link-val">gkesu0007@gmail.com</div></div></a>
                     <div class="contact-link" style="cursor:default;"><div class="contact-link-icon">📍</div><div><div class="contact-link-label">Location</div><div class="contact-link-val">Mamsapuram, Virudhunagar, Tamil Nadu, India</div></div></div>
                 </div>
             </div>
@@ -1636,36 +1672,6 @@
         background: var(--bg);
         border-top: 1px solid var(--border);
         padding: 6rem 0;
-    }
-
-    .container {
-        max-width: 1040px;
-        margin: 0 auto;
-        padding: 0 2rem;
-    }
-
-    .section-eyebrow {
-        font-size: 11px;
-        font-weight: 600;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        color: var(--accent);
-        margin-bottom: 0.5rem;
-    }
-
-    .section-title {
-        font-size: 32px;
-        font-weight: 600;
-        color: var(--text);
-        line-height: 1.2;
-        margin-bottom: 0.5rem;
-    }
-
-    .section-sub {
-        color: var(--muted);
-        font-size: 15px;
-        max-width: 520px;
-        margin-bottom: 3rem;
     }
 
     .form-grid {
@@ -1750,15 +1756,6 @@
 
     .form-info strong {
         color: var(--text);
-    }
-
-    .form-info code {
-        background: var(--bg3);
-        padding: 2px 8px;
-        border-radius: 4px;
-        font-family: monospace;
-        font-size: 13px;
-        color: var(--accent);
     }
 
     .info-box {
@@ -1890,6 +1887,66 @@
             sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
             navLinks.forEach(a => { a.style.color = a.getAttribute('href') === '#' + current ? 'var(--text)' : ''; });
         });
+
+        // ── Page-transition style navigation ──
+        // Clicking any in-page nav link "swipes" a full-screen panel over the
+        // viewport (like moving to a new page), jumps to the target section
+        // while hidden, then swipes the panel away to reveal it — instead of
+        // a plain scroll-into-view.
+        (function () {
+            const overlay = document.getElementById('pageTransitionOverlay');
+            const label = document.getElementById('pageTransitionLabel');
+            const NAV_HEIGHT = 64;
+            let isTransitioning = false;
+
+            const sectionLabels = {
+                hero: 'Home',
+                about: 'About',
+                experience: 'Experience',
+                skills: 'Skills',
+                projects: 'Projects',
+                certifications: 'Certifications',
+                activity: 'Activity',
+                community: 'Community',
+                contact: 'Contact'
+            };
+
+            function goToSection(hash) {
+                if (isTransitioning) return;
+                const id = hash.replace('#', '');
+                const target = document.getElementById(id);
+                if (!target) return;
+
+                isTransitioning = true;
+                label.textContent = sectionLabels[id] || id;
+
+                const handleCovered = () => {
+                    overlay.removeEventListener('transitionend', handleCovered);
+                    window.scrollTo({ top: target.offsetTop - NAV_HEIGHT, left: 0, behavior: 'auto' });
+                    overlay.classList.remove('is-covering');
+                    overlay.classList.add('is-revealing');
+                    overlay.addEventListener('transitionend', handleRevealed);
+                };
+                const handleRevealed = () => {
+                    overlay.removeEventListener('transitionend', handleRevealed);
+                    overlay.classList.remove('is-revealing');
+                    isTransitioning = false;
+                };
+
+                overlay.addEventListener('transitionend', handleCovered);
+                overlay.classList.add('is-covering');
+            }
+
+            document.querySelectorAll('a[href^="#"]').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const hash = link.getAttribute('href');
+                    if (!hash || hash === '#') return;
+                    e.preventDefault();
+                    document.querySelector('.mobile-menu')?.classList.remove('open');
+                    goToSection(hash);
+                });
+            });
+        })();
     </script>
 
     <!-- ═══════════════════════════════════════════════════════════════
@@ -2007,8 +2064,6 @@
             globalBgSymbols.innerHTML = html;
         }
     </script>
-
-    
 
 </body>
 </html>
