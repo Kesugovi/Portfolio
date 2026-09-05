@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="google-site-verification" content="cGQgBMmu-mJMNPFeXXg3-bYb6bFECRTdqWSzgqw-tqo" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Contact · Kesavan G — AI &amp; Data Science Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <div class="global-bg-symbols" id="globalBgSymbols"></div>
+    <!-- ─── NAV ─── -->
+    <nav>
+        <a href="index.html" class="nav-logo">K<span>.</span>G</a>
+        <ul class="nav-links">
+            <li><a href="about.html">About</a></li>
+            <li><a href="experience.html">Experience</a></li>
+            <li><a href="skills.html">Skills</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="certifications.html">Certs</a></li>
+            <li><a href="activity.html">Activity</a></li>
+            <li><a href="education.html">Education</a></li>
+            <li><a href="community.html">Community</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <a href="https://www.linkedin.com/in/kesavan-g-09a126289" class="nav-cta" target="_blank">LinkedIn ↗</a>
+        <button class="hamburger" onclick="document.querySelector('.mobile-menu').classList.toggle('open')">☰</button>
+    </nav>
+    <div class="mobile-menu">
+        <a href="about.html">About</a>
+        <a href="experience.html">Experience</a>
+        <a href="skills.html">Skills</a>
+        <a href="projects.html">Projects</a>
+        <a href="certifications.html">Certs</a>
+        <a href="activity.html">Activity</a>
+        <a href="education.html">Education</a>
+        <a href="community.html">Community</a>
+        <a href="contact.html">Contact</a>
+    </div>
+
+    <div id="mainContent" class="is-transitioning-in no-anim">
+<!-- ─── CONTACT ─── -->
+    <section id="contact">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-cta reveal">
+                    <p class="section-eyebrow">Contact</p>
+                    <h3>Let's build something together</h3>
+                    <p>Open to internships, collaborations, research projects, and full-time roles in AI, ML, and data science. Feel free to reach out on LinkedIn or drop a message.</p>
+                    <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+                        <a href="https://www.linkedin.com/in/kesavan-g-09a126289" class="btn-primary" target="_blank">Connect on LinkedIn ↗</a>
+                        <a href="https://github.com/Kesugovi" class="btn-primary" target="_blank"> GITHUB ↗</a>
+
+                        <a href="https://docs.google.com/document/d/1h0R3MFzzOYdXA7MTG07uavz8j9PU7TXX/edit?usp=sharing&ouid=109076044208867783466&rtpof=true&sd=true" class="btn-outline" target="_blank">📄 Download CV</a>
+                    </div>
+                </div>
+                <div class="contact-links reveal">
+                    <a href="https://www.linkedin.com/in/kesavan-g-09a126289" class="contact-link" target="_blank"><div class="contact-link-icon">💼</div><div><div class="contact-link-label">LinkedIn</div><div class="contact-link-val">Kesavan G</div></div></a>
+                    <a href="tel:+919025198474" class="contact-link"><div class="contact-link-icon">@</div><div><div class="contact-link-label">Contact no</div><div class="contact-link-val">9025198474</div></div></a>
+                    <a href="mailto:gkesu0007@gmail.com" class="contact-link"><div class="contact-link-icon">💼</div><div><div class="contact-link-label">Mail</div><div class="contact-link-val">gkesu0007@gmail.com</div></div></a>
+                    <div class="contact-link" style="cursor:default;"><div class="contact-link-icon">📍</div><div><div class="contact-link-label">Location</div><div class="contact-link-val">Mamsapuram, Virudhunagar, Tamil Nadu, India</div></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ─── CONTACT FORM (Google Sheets Integration) ─── -->
+    
+<!-- ─── FORM HTML ─── -->
+<section id="form-section">
+    <div class="container">
+        <div class="reveal">
+            <p class="section-eyebrow">Inquiry</p>
+            <h2 class="section-title">Let's work together</h2>
+            <p class="section-sub">Fill in your details and I'll get back to you within 24 hours.</p>
+        </div>
+        <div class="form-grid reveal">
+            <!-- FORM -->
+            <div class="form-card">
+                <form id="client-form" action="https://script.google.com/macros/s/AKfycbyhVUOsXrpNrJmtDam3-XxRGsC5T4OGWVN6oAeok9QYIlKt4lI5Xzurisu4SLPCg67_/exec" method="POST">
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" name="name" placeholder="e.g. John Doe" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" name="phone" placeholder="e.g. +91 98765 43210" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="company">Company / Organisation</label>
+                        <input type="text" id="company" name="company" placeholder="e.g. Google" />
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" placeholder="you@example.com" required />
+                    </div>
+                    <button type="submit" class="form-submit">Send Inquiry</button>
+                    <div id="form-status" class="form-status"></div>
+                </form>
+            </div>
+
+            <!-- INFO SIDEBAR -->
+            <div class="form-info">
+                <p><strong>Why reach out?</strong></p>
+                <p>I'm always open to discussing new projects, internship opportunities, research collaborations, or just geeking out about AI and data.</p>
+                <p style="margin-top:1.5rem;"><strong>📧 Direct email:</strong> gkesu0007@gmail.com</p>
+                <p style="margin-top:0.5rem; font-size:13px; color:var(--muted);">Your data will be stored securely in a Google Sheet and only used to respond to your inquiry.</p>
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ─── FOOTER ─── -->
+    <footer>
+        <p>© 2025 Kesavan G · Crafted with purpose · AI &amp; Data Science · Ramco Institute of Technology</p>
+    </footer>
+    </div><!-- /#mainContent -->
+
+    <script src="script.js"></script>
+</body>
+</html>
