@@ -12,23 +12,27 @@
 /* ============ RESET ============ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-::selection{background:#e8a33d;color:#12110c;}
+::selection{background:#4f8ef7;color:#0b0d10;}
 
-/* ============ TOKENS ============ */
+/* ============ TOKENS (palette restored from the original portfolio) ============ */
 :root{
-  --bg:#0a0906;
-  --bg-1:#120f0a;
-  --bg-2:#1a160f;
-  --line:#2b271d;
-  --line-soft:#1e1a13;
-  --ink:#f4efe1;
-  --ink-dim:#cbc3ae;
-  --muted:#8d8471;
-  --accent:#e8a33d;
-  --accent-2:#5cb8ac;
-  --accent-soft:rgba(232,163,61,0.12);
-  --accent2-soft:rgba(92,184,172,0.12);
-  --danger:#d96a56;
+  --bg:#0b0d10;
+  --bg-1:#14181f;
+  --bg-2:#1c212a;
+  --line:rgba(255,255,255,0.08);
+  --line-soft:rgba(255,255,255,0.05);
+  --ink:#eef2f6;
+  --ink-dim:#c7cedb;
+  --muted:#8a94a6;
+  --accent:#4f8ef7;
+  --accent-2:#7c5cfc;
+  --green:#3ecf8e;
+  --amber:#f5a623;
+  --accent-soft:rgba(79,142,247,0.12);
+  --accent2-soft:rgba(124,92,252,0.12);
+  --green-soft:rgba(62,207,142,0.12);
+  --amber-soft:rgba(245,166,35,0.12);
+  --danger:#e06a56;
   --radius:18px;
   --radius-sm:9px;
   --serif:'Fraunces', Georgia, serif;
@@ -49,14 +53,26 @@ img{max-width:100%;display:block;}
 a{color:inherit;}
 button{font-family:inherit;}
 
-/* faint film-grain / vignette so pure black never looks flat */
+/* faint vignette, sits behind the floating symbol layer */
 body::before{
   content:'';
-  position:fixed; inset:0; z-index:0; pointer-events:none;
+  position:fixed; inset:0; z-index:-2; pointer-events:none;
   background:
-    radial-gradient(ellipse 70% 60% at 82% 8%, rgba(232,163,61,0.07), transparent 60%),
-    radial-gradient(ellipse 60% 50% at 10% 90%, rgba(92,184,172,0.06), transparent 60%);
+    radial-gradient(ellipse 70% 60% at 82% 8%, rgba(79,142,247,0.09), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 10% 90%, rgba(124,92,252,0.08), transparent 60%);
 }
+
+/* ============ FLOATING BACKGROUND SYMBOLS (math / ML / data / tool glyphs) ============ */
+.global-bg-symbols{
+  position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; opacity:.15;
+}
+.global-bg-symbols span{
+  position:absolute; font-family:var(--mono); white-space:nowrap;
+  animation:bgFloat ease-in-out infinite;
+}
+@keyframes bgFloat{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-46px) rotate(12deg);}}
+@media (prefers-reduced-motion:reduce){.global-bg-symbols span{animation:none;}}
+
 
 .wrap{max-width:1180px;margin:0 auto;padding:0 2.4rem;}
 @media (max-width:640px){.wrap{padding:0 1.3rem;}}
@@ -253,28 +269,34 @@ h2.title{
 .log-tags{display:flex; flex-wrap:wrap; gap:6px; margin-top:.9rem;}
 .log-tags span{font-family:var(--mono); font-size:10px; color:var(--ink-dim); border:1px solid var(--line); border-radius:5px; padding:3px 8px;}
 
-/* ============ SKILLS — terminal readout ============ */
-.term{
+/* ============ SKILLS — tiered signal panels ============ */
+.skill-tier-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:1.25rem;}
+.skill-tier{
   border:1px solid var(--line); border-radius:var(--radius); background:var(--bg-1);
+  overflow:hidden; position:relative; transition:transform .25s, border-color .25s;
+}
+.skill-tier::before{content:'';position:absolute; top:0; left:0; right:0; height:3px; background:var(--tc, var(--accent));}
+.skill-tier:hover{transform:translateY(-3px); border-color:var(--tc, var(--accent));}
+.skill-tier-head{display:flex; align-items:center; gap:11px; padding:1.1rem 1.2rem; border-bottom:1px solid var(--line-soft);}
+.skill-tier-head .t-icon{
+  width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center;
+  font-size:16px; background:var(--tc-soft, var(--accent-soft)); flex-shrink:0;
+}
+.skill-tier-head .t-name{font-family:var(--serif); font-size:16px; line-height:1.2;}
+.skill-tier-head .t-sub{font-family:var(--mono); font-size:9.5px; color:var(--muted); margin-top:2px;}
+.skill-tier-head .t-count{font-family:var(--mono); font-size:10px; color:var(--tc, var(--accent)); margin-left:auto; white-space:nowrap;}
+.skill-tier-body{padding:1.1rem 1.2rem 1.3rem;}
+.skill-row{display:flex; align-items:center; gap:10px; padding:7px 0;}
+.skill-ico{
+  width:24px; height:24px; border-radius:7px; flex-shrink:0; display:flex; align-items:center; justify-content:center;
+  background:var(--tc-soft, var(--accent-soft)); font-family:var(--mono); font-size:10px; font-weight:700; color:var(--tc, var(--accent));
   overflow:hidden;
 }
-.term-bar{
-  display:flex; align-items:center; gap:8px; padding:.9rem 1.2rem; border-bottom:1px solid var(--line-soft);
-  font-family:var(--mono); font-size:11px; color:var(--muted);
-}
-.term-bar .dots{display:flex; gap:6px;}
-.term-bar .dots span{width:9px;height:9px;border-radius:50%; background:var(--line);}
-.term-body{padding:1.6rem 1.4rem 1.8rem;}
-.term-group{margin-bottom:1.7rem;}
-.term-group:last-child{margin-bottom:0;}
-.term-group-h{display:flex; align-items:center; justify-content:space-between; margin-bottom:.9rem;}
-.term-group-h .g-name{font-family:var(--serif); font-size:16px;}
-.term-group-h .g-sub{font-family:var(--mono); font-size:10px; color:var(--muted);}
-.term-row{display:grid; grid-template-columns:140px 1fr; align-items:center; gap:12px; padding:6px 0; font-family:var(--mono); font-size:12px;}
-@media (max-width:520px){.term-row{grid-template-columns:96px 1fr; font-size:11px;}}
-.term-row .s-name{color:var(--ink-dim); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
-.term-track{height:5px; background:var(--line-soft); border-radius:3px; overflow:hidden;}
-.term-fill{height:100%; border-radius:3px; background:linear-gradient(90deg, var(--accent-2), var(--accent)); width:0%; transition:width 1.1s cubic-bezier(.4,0,.2,1);}
+.skill-ico img{width:14px; height:14px; object-fit:contain;}
+.skill-row .s-name{font-family:var(--mono); font-size:12px; color:var(--ink-dim); flex:0 0 auto; width:112px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+@media (max-width:420px){.skill-row .s-name{width:82px; font-size:11px;}}
+.term-track{flex:1; height:5px; background:var(--line-soft); border-radius:3px; overflow:hidden;}
+.term-fill{height:100%; border-radius:3px; background:var(--tc, var(--accent)); width:0%; transition:width 1.1s cubic-bezier(.4,0,.2,1);}
 
 /* ============ PROJECTS — case files ============ */
 .case-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(300px,1fr)); gap:1.4rem;}
@@ -290,6 +312,7 @@ h2.title{
 }
 .case-cover img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
 .case-id{position:absolute; top:10px; left:12px; font-family:var(--mono); font-size:10px; color:var(--ink); background:rgba(10,9,6,.55); padding:3px 8px; border-radius:5px; z-index:1;}
+.case-shots{position:absolute; top:10px; right:12px; font-family:var(--mono); font-size:10px; color:var(--ink); background:rgba(10,9,6,.55); padding:3px 8px; border-radius:5px; z-index:1;}
 .case-body{padding:1.3rem 1.3rem 1.5rem; display:flex; flex-direction:column; gap:.7rem; flex:1;}
 .case-badge{font-family:var(--mono); font-size:10px; color:var(--accent); letter-spacing:.03em;}
 .case-title{font-family:var(--serif); font-size:18px; font-weight:500;}
@@ -421,6 +444,7 @@ footer{text-align:center; padding:2.6rem; font-family:var(--mono); font-size:11p
 </style>
 </head>
 <body>
+<div class="global-bg-symbols" id="globalBgSymbols"></div>
 
 <!-- ═══════ SPLASH ═══════ -->
 <div id="splash">
@@ -537,11 +561,8 @@ footer{text-align:center; padding:2.6rem; font-family:var(--mono); font-size:11p
       <div class="wrap">
         <div class="kicker reveal"><span class="num">03</span> — Skills</div>
         <h2 class="title reveal">What I reach for</h2>
-        <p class="lede reveal">A live readout, not a percentage bar — grouped by how often each tool actually gets used.</p>
-        <div class="term reveal" style="margin-top:2rem;">
-          <div class="term-bar"><div class="dots"><span></span><span></span><span></span></div> kesavan@toolkit — status</div>
-          <div class="term-body" id="skillTerm"></div>
-        </div>
+        <p class="lede reveal">Grouped by how often each tool actually gets used — not a generic percentage bar.</p>
+        <div class="skill-tier-grid reveal" id="skillTerm" style="margin-top:2rem;"></div>
       </div>
     </section>
 
@@ -650,8 +671,12 @@ footer{text-align:center; padding:2.6rem; font-family:var(--mono); font-size:11p
       <label>Icon (single emoji, used if no image)</label><input id="pIcon" placeholder="🚀" />
       <label>Description</label><textarea id="pDesc"></textarea>
       <label>Tags (comma separated)</label><input id="pTags" />
-      <label>Image URL (optional)</label><input id="pImg" />
       <label>Link URL (optional)</label><input id="pLink" />
+      <label>Photos — shown one-by-one when "View" is clicked</label>
+      <div id="pGalleryList" class="admin-note" style="margin-bottom:.4rem;"></div>
+      <input id="pGalImg" placeholder="Image URL" style="margin-bottom:6px;" />
+      <input id="pGalCap" placeholder="Description for this photo" style="margin-bottom:6px;" />
+      <button type="button" class="admin-save" id="pGalAdd" style="background:none; border:1px solid var(--line); color:var(--ink-dim);">+ Add photo</button>
       <button class="admin-save" id="pSave">Save project</button>
       <button class="admin-save" id="pCancel" style="background:none; border:1px solid var(--line); color:var(--ink-dim); margin-top:6px; display:none;">Cancel edit</button>
     </div>
@@ -753,22 +778,22 @@ const DEFAULTS = {
      ]},
     {id:"01", title:"PhysioNet ECG Image Digitisation", badge:"Kaggle Top 300+", icon:"🫀",
      desc:"First Kaggle competition: −20 → 17+ score, Top 300 of 10,000+ participants. Debugged preprocessing, validation, and used pre-trained models.",
-     tags:["Deep Learning","Computer Vision"], img:"", link:""},
+     tags:["Deep Learning","Computer Vision"], link:"", gallery:[]},
     {id:"02", title:"Friday AI — Multilingual Assistant", badge:"Voice AI", icon:"🤖",
      desc:"Built with Python, LiveKit, Gemini API & noise cancellation. Real-time conversation, web info retrieval, multilingual support.",
-     tags:["Gemini API","Voice AI","LiveKit"], img:"", link:""},
+     tags:["Gemini API","Voice AI","LiveKit"], link:"", gallery:[]},
     {id:"03", title:"Driver Drowsiness Detection", badge:"Safety", icon:"🚗",
      desc:"AI + computer vision system that detects sleepy drivers and alerts them. Showcased at Nexus'25, organised by Neoteric AI Association, RIT.",
-     tags:["OpenCV","CNN","Real-time"], img:"", link:""},
+     tags:["OpenCV","CNN","Real-time"], link:"", gallery:[]},
     {id:"04", title:"Smart Home IoT Load Forecasting", badge:"R² = 0.9528", icon:"🏠",
      desc:"Adaptive hybrid LSTM–XGBoost framework with behavioural feature engineering for smart home energy forecasting, using inverse-error ensemble weighting.",
-     tags:["Python","LSTM","XGBoost","Pandas"], img:"", link:""},
+     tags:["Python","LSTM","XGBoost","Pandas"], link:"", gallery:[]},
     {id:"05", title:"Compliance Checker — Cloud Policy Validator", badge:"Cloud", icon:"☁️",
      desc:"Automated validation of Terraform configurations against Google Cloud & CIS benchmarks, generating structured compliance reports.",
-     tags:["Python","Flask","Terraform"], img:"", link:""},
+     tags:["Python","Flask","Terraform"], link:"", gallery:[]},
     {id:"06", title:"Handwritten Records → Excel Automation", badge:"1 hr → 1 min", icon:"🪪",
      desc:"Built for a family friend's ID card business: upload a handwritten sheet or PDF, Gemini API extracts details into a clean Excel sheet ready for bulk printing.",
-     tags:["Python","Flask","Gemini API"], img:"", link:"https://lnkd.in/gEDP_EB4"}
+     tags:["Python","Flask","Gemini API"], link:"https://lnkd.in/gEDP_EB4", gallery:[]}
   ],
   certs: [
     {name:"Deloitte Australia – Data Analytics", issuer:"Forage", date:"Issued Jan 2026", icon:"🎓", tags:["Data Analysis","Visualisation"]},
@@ -828,6 +853,37 @@ function saveData(){
   renderAdminLists();
 }
 let DATA = loadData();
+
+/* ============================================================
+   FLOATING BACKGROUND SYMBOLS
+   ============================================================ */
+(function(){
+  const el = document.getElementById('globalBgSymbols');
+  if(!el) return;
+  const SYMBOLS = [
+    "{ }","[ ]","( )","</>","=>","&&","||","==","!=","++",
+    "0x2A",";",":","@","#","%","^","&","*",
+    "π","∑","√","∞","λ","Δ","∫","θ","σ","μ",
+    "y = mx + c","f(x)","O(n log n)","w·x + b","softmax()",
+    "function","const","return","import","async","SELECT *","print()","df.head()",
+    "01","10","model.fit()","np.array","pd.DataFrame","git commit",
+    "⚡","⚙️","💫","🎯","🧠","🚀"
+  ];
+  const COLORS = ["#4f8ef7","#7c5cfc","#3ecf8e","#f5a623"];
+  const COUNT = 46;
+  let html = '';
+  for(let i=0;i<COUNT;i++){
+    const symbol = SYMBOLS[Math.floor(Math.random()*SYMBOLS.length)];
+    const color = COLORS[Math.floor(Math.random()*COLORS.length)];
+    const top = Math.random()*100;
+    const left = Math.random()*100;
+    const size = 11 + Math.random()*17;
+    const duration = 7 + Math.random()*11;
+    const delay = Math.random()*6;
+    html += `<span style="top:${top}%; left:${left}%; font-size:${size}px; color:${color}; animation-duration:${duration}s; animation-delay:-${delay}s;">${symbol}</span>`;
+  }
+  el.innerHTML = html;
+})();
 
 /* ============================================================
    SPLASH
@@ -907,22 +963,57 @@ function renderExperience(){
 }
 
 /* ============================================================
-   RENDER: SKILLS (terminal readout)
+   RENDER: SKILLS — tiered panels with icons + tier colour coding
    ============================================================ */
+const TIER_META = {
+  "Daily Driver":            {icon:"🔥", sub:"used on almost every project", color:"#4f8ef7"},
+  "Comfortable With":        {icon:"🧩", sub:"solid enough to build real things", color:"#7c5cfc"},
+  "AI-Assisted Workflow":    {icon:"🧠", sub:"tools I think alongside", color:"#3ecf8e"},
+  "Currently Exploring":     {icon:"🌱", sub:"learning by shipping, not reading", color:"#f5a623"}
+};
+const DEFAULT_TIER_COLORS = ["#4f8ef7","#7c5cfc","#3ecf8e","#f5a623"];
+const SKILL_ICON_SLUGS = {
+  "python":"python", "pandas & numpy":"pandas", "pandas":"pandas", "numpy":"numpy",
+  "git":"git", "flask":"flask", "vs code":"visualstudiocode",
+  "tensorflow / keras":"tensorflow", "tensorflow":"tensorflow", "keras":"keras",
+  "scikit-learn":"scikitlearn", "html & css":"html5", "sql":"mysql", "streamlit":"streamlit",
+  "gemini api":"googlegemini", "canva":"canva", "terraform":"terraform",
+  "power bi":"powerbi", "chatgpt / claude":"openai", "opencv":"opencv", "javascript":"javascript",
+  "docker":"docker", "figma":"figma", "notion":"notion", "excel":"microsoftexcel"
+};
+function tierColor(g, idx){ return (TIER_META[g] && TIER_META[g].color) || DEFAULT_TIER_COLORS[idx % DEFAULT_TIER_COLORS.length]; }
+function skillIcon(name, color){
+  const slug = SKILL_ICON_SLUGS[name.trim().toLowerCase()];
+  if(slug){
+    return `<span class="skill-ico"><img src="https://cdn.simpleicons.org/${slug}/${color.replace('#','')}" alt="" onerror="this.parentElement.textContent='${esc(name.trim().charAt(0).toUpperCase())}'" /></span>`;
+  }
+  return `<span class="skill-ico">${esc(name.trim().charAt(0).toUpperCase())}</span>`;
+}
 function renderSkills(){
   const wrap = document.getElementById('skillTerm');
   const groups = Object.keys(DATA.skills);
-  wrap.innerHTML = groups.map(g=>`
-    <div class="term-group">
-      <div class="term-group-h"><span class="g-name">${esc(g)}</span><span class="g-sub">${DATA.skills[g].length} modules</span></div>
-      ${DATA.skills[g].map(([name,lvl])=>`
-        <div class="term-row">
-          <span class="s-name">${esc(name)}</span>
-          <span class="term-track"><span class="term-fill" data-lvl="${lvl}"></span></span>
-        </div>
-      `).join('')}
-    </div>
-  `).join('');
+  wrap.innerHTML = groups.map((g,gi)=>{
+    const meta = TIER_META[g] || {icon:"⚙️", sub:"", color: tierColor(g,gi)};
+    const color = meta.color;
+    const soft = color + '20';
+    return `
+    <div class="skill-tier" style="--tc:${color}; --tc-soft:${soft};">
+      <div class="skill-tier-head">
+        <div class="t-icon">${meta.icon}</div>
+        <div><div class="t-name">${esc(g)}</div><div class="t-sub">${esc(meta.sub||'')}</div></div>
+        <div class="t-count">${DATA.skills[g].length} skills</div>
+      </div>
+      <div class="skill-tier-body">
+        ${DATA.skills[g].map(([name,lvl])=>`
+          <div class="skill-row">
+            ${skillIcon(name, color)}
+            <span class="s-name">${esc(name)}</span>
+            <span class="term-track"><span class="term-fill" data-lvl="${lvl}"></span></span>
+          </div>
+        `).join('')}
+      </div>
+    </div>`;
+  }).join('');
   requestAnimationFrame(()=>{
     setTimeout(()=>{
       wrap.querySelectorAll('.term-fill').forEach(f=>{ f.style.width = (f.dataset.lvl*20)+'%'; });
@@ -933,13 +1024,21 @@ function renderSkills(){
 /* ============================================================
    RENDER: PROJECTS
    ============================================================ */
+function coverImg(p){
+  if(Array.isArray(p.gallery) && p.gallery.length && p.gallery[0].img) return p.gallery[0].img;
+  return p.img || '';
+}
 function renderProjects(){
   const wrap = document.getElementById('caseGrid');
-  wrap.innerHTML = DATA.projects.map((p,idx)=>`
+  wrap.innerHTML = DATA.projects.map((p,idx)=>{
+    const cover = coverImg(p);
+    const shotCount = Array.isArray(p.gallery) ? p.gallery.length : 0;
+    return `
     <div class="case">
       <div class="case-cover">
-        ${p.img ? `<img src="${esc(p.img)}" alt="${esc(p.title)}" />` : (p.icon||'📁')}
+        ${cover ? `<img src="${esc(cover)}" alt="${esc(p.title)}" />` : (p.icon||'📁')}
         <span class="case-id">FILE-${String(idx+1).padStart(2,'0')}</span>
+        ${shotCount>1 ? `<span class="case-shots">${shotCount} photos</span>` : ''}
       </div>
       <div class="case-body">
         <span class="case-badge">${esc(p.badge||'')}</span>
@@ -951,8 +1050,8 @@ function renderProjects(){
           ${p.link ? `<a class="btn btn-solid" href="${esc(p.link)}" target="_blank">Open ↗</a>` : ''}
         </div>
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 }
 let currentGallery = null, galleryIdx = 0;
 function openProject(idx){
@@ -1114,19 +1213,44 @@ function renderAdminLists(){
 function deleteItem(key, i){ DATA[key].splice(i,1); saveData(); }
 function deleteSkill(g,i){ DATA.skills[g].splice(i,1); saveData(); }
 
-/* ---- Projects form ---- */
+/* ---- Projects form (with per-project photo gallery) ---- */
+let draftGallery = [];
+function renderDraftGallery(){
+  const box = document.getElementById('pGalleryList');
+  if(!draftGallery.length){ box.innerHTML = 'No photos added yet — the project card will show its icon until you add one.'; return; }
+  box.innerHTML = draftGallery.map((g,i)=>`
+    <div class="admin-item" style="align-items:flex-start;">
+      <div style="display:flex; gap:8px; align-items:center; min-width:0;">
+        <img src="${esc(g.img)}" style="width:34px;height:34px;object-fit:cover;border-radius:6px;flex-shrink:0;" onerror="this.style.opacity=0.2" />
+        <span class="ai-sub" style="white-space:normal;">${esc(g.caption||'(no description)')}</span>
+      </div>
+      <div class="ai-actions"><button class="del" onclick="removeDraftGalleryImg(${i})">Del</button></div>
+    </div>`).join('');
+}
+function removeDraftGalleryImg(i){ draftGallery.splice(i,1); renderDraftGallery(); }
+document.getElementById('pGalAdd').addEventListener('click', ()=>{
+  const url = document.getElementById('pGalImg').value.trim();
+  const cap = document.getElementById('pGalCap').value.trim();
+  if(!url) return;
+  draftGallery.push({img:url, caption:cap});
+  document.getElementById('pGalImg').value=''; document.getElementById('pGalCap').value='';
+  renderDraftGallery();
+});
 function editProject(i){
   const p = DATA.projects[i]; editIndex.projects = i;
   document.getElementById('pTitle').value=p.title; document.getElementById('pBadge').value=p.badge||'';
   document.getElementById('pIcon').value=p.icon||''; document.getElementById('pDesc').value=p.desc||'';
-  document.getElementById('pTags').value=(p.tags||[]).join(', '); document.getElementById('pImg').value=p.img||'';
+  document.getElementById('pTags').value=(p.tags||[]).join(', ');
   document.getElementById('pLink').value=p.link||'';
+  draftGallery = (p.gallery||[]).map(g=>({img:g.img, caption:g.caption||''}));
+  renderDraftGallery();
   document.getElementById('admProjMode').textContent='Editing "'+p.title+'"';
   document.getElementById('pCancel').style.display='block';
 }
 document.getElementById('pCancel').addEventListener('click', ()=>{ editIndex.projects=null; clearProjForm(); });
 function clearProjForm(){
-  ['pTitle','pBadge','pIcon','pDesc','pTags','pImg','pLink'].forEach(id=>document.getElementById(id).value='');
+  ['pTitle','pBadge','pIcon','pDesc','pTags','pLink','pGalImg','pGalCap'].forEach(id=>document.getElementById(id).value='');
+  draftGallery = []; renderDraftGallery();
   document.getElementById('admProjMode').textContent='Add a new project';
   document.getElementById('pCancel').style.display='none';
 }
@@ -1137,14 +1261,15 @@ document.getElementById('pSave').addEventListener('click', ()=>{
     icon: document.getElementById('pIcon').value.trim(),
     desc: document.getElementById('pDesc').value.trim(),
     tags: document.getElementById('pTags').value.split(',').map(s=>s.trim()).filter(Boolean),
-    img: document.getElementById('pImg').value.trim(),
-    link: document.getElementById('pLink').value.trim()
+    link: document.getElementById('pLink').value.trim(),
+    gallery: draftGallery.slice()
   };
   if(!obj.title) return;
   if(editIndex.projects!==null){ DATA.projects[editIndex.projects]=obj; editIndex.projects=null; }
   else DATA.projects.push(obj);
   clearProjForm(); saveData();
 });
+renderDraftGallery();
 
 /* ---- Certs form ---- */
 function editCert(i){
